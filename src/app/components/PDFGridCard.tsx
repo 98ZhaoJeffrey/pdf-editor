@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { AiFillFilePdf } from "react-icons/ai";
-const PDFCard = () => {
+const PDFGridCard: React.FC = () => {
     return (
         <>
             <div className='hover:drop-shadow-md'>
@@ -17,4 +17,4 @@ const PDFCard = () => {
         </>
     )
 }
-export default PDFCard
+export default PDFGridCard

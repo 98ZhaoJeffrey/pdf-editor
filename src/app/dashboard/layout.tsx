@@ -7,13 +7,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className='flex overflow-hidden'>
+    <div className='flex overflow-hidden bg-slate-50'>
       <Sidebar />
       {/* Main section */}
       <div className="w-full h-screen flex flex-col">
         {/* Nav bar */}
         <Navbar />
-        <div className='w-full bg-slate-50'>{children}</div>
+        <div className='w-full'>{children}</div>
       </div>
 
     </div>

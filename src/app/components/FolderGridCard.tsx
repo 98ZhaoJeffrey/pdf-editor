@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { AiFillFolder } from "react-icons/ai";
-const FolderCard = () => {
+const FolderGridCard : React.FC = () => {
     return (
         <>
             <div className='hover:drop-shadow-md'>
@@ -18,4 +18,4 @@ const FolderCard = () => {
         </>
     )
 }
-export default FolderCard
+export default FolderGridCard
