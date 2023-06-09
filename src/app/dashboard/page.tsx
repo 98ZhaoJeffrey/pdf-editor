@@ -55,26 +55,26 @@ const ListView: React.FC = () => {
     )
 }
 
-const page = () => {
-    const [gridView, setGridView] = useState(true);
+const Page: React.FC = () => {
+    const [gridView, setGridView] = useState<boolean>(true);
 
     return (
         <div className='pt-5 pl-14'>
             <div className='flex justify-between'>
                 <h1 className='text-title'>Shared</h1>
                 <button
-                    onClick={() => setGridView((prev) => !prev)}
+                    onClick={() => setGridView(prev => !prev)}
                     className='rounded-full mr-20 bg-slate-200 hover:bg-slate-300 p-5'
-                    title={gridView ? "Grid view" : "List view"}
+                    title={gridView ? 'Grid view' : 'List view'}
                 >
                     {gridView ? <BsGrid3X3Gap size={25} /> : <BsListUl size={25} />}
                 </button>
             </div>
-            <hr className='mb-5 mt-8 mr-5'></hr>
+            <hr className='mb-5 mt-8 mr-5' />
             {/* Displays all of the pdf files */}
             {gridView ? <GridView /> : <ListView />}
         </div>
-    )
-}
+    );
+};
 
-export default page
+export default Page;
