@@ -7,7 +7,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className='flex overflow-hidden bg-slate-50'>
+    <div className='flex overflow-hidden bg-slate-100'>
       <Sidebar />
       {/* Main section */}
       <div className="w-full h-screen flex flex-col">
