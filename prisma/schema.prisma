@@ -1,0 +1,24 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Block {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  isFolder    Boolean
+  creationDate DateTime
+  fileType     String
+  size         Int
+  fileUrl      String?
+  parent       Block?      @relation("BlockToParent", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  parentId     String?     @db.ObjectId
+  ancestors    Block[]     @relation("BlockToParent")
+}
