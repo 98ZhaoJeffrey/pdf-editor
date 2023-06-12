@@ -3,7 +3,7 @@ import React from 'react';
 
 const Searchbar = () => {
     return (
-        <form onSubmit={() => alert("searching")} className="relative flex min-w-[35%] m-2 rounded-3xl focus-within:shadow-lg bg-white">
+        <form onSubmit={() => alert("searching")} className="relative flex min-w-[40%] m-2 rounded-3xl focus-within:shadow-lg bg-white">
             <div className="grid place-items-center h-full w-12 text-gray-300">
                 <button type='submit'>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

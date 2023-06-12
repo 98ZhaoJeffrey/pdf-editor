@@ -1,6 +1,8 @@
 import React from 'react';
 import SidebarLink from './SidebarLink';
 import { MdAccessTimeFilled, MdAdd, MdCloudCircle, MdCreateNewFolder, MdLogout, MdPeopleAlt, MdStar } from 'react-icons/md';
+import { SignOutButton } from '@clerk/nextjs'
+import Link from 'next/link';
 
 const Sidebar: React.FC = () => {
     return (
@@ -21,7 +23,12 @@ const Sidebar: React.FC = () => {
                 </div>
             </div>
 
-            <SidebarLink alt={false}> <MdLogout /> Log out </SidebarLink>
+            <SignOutButton>
+                <Link href="/">
+                    <SidebarLink alt={false}> <MdLogout /> Log out </SidebarLink>
+                </Link>
+            </SignOutButton>
+
         </div>
     );
 }

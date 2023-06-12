@@ -64,7 +64,7 @@ const Page: React.FC = () => {
                 <h1 className='text-title'>Shared</h1>
                 <button
                     onClick={() => setGridView(prev => !prev)}
-                    className='rounded-full mr-20 bg-slate-200 hover:bg-slate-300 p-5'
+                    className='rounded-full mr-20 mt-1 hover:bg-slate-200 p-5'
                     title={gridView ? 'Grid view' : 'List view'}
                 >
                     {gridView ? <BsGrid3X3Gap size={25} /> : <BsListUl size={25} />}
