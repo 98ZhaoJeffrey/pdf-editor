@@ -15,7 +15,6 @@ export default function RootLayout({
         <Navbar />
         <div className='w-full'>{children}</div>
       </div>
-
     </div>
   )
 }
