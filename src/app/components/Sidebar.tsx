@@ -2,7 +2,6 @@ import React from 'react';
 import SidebarLink from './SidebarLink';
 import { MdAccessTimeFilled, MdCloudCircle, MdLogout, MdPeopleAlt, MdStar } from 'react-icons/md';
 import { SignOutButton } from '@clerk/nextjs'
-import Link from 'next/link';
 import AddFolderButton from './AddFolderButton';
 import AddFileButton from './AddFileButton';
 
@@ -17,19 +16,16 @@ const Sidebar: React.FC = () => {
                 </div>
                 <hr></hr>
                 <div>
-                    <SidebarLink> <MdCloudCircle size={20} /> My Drive </SidebarLink>
-                    <SidebarLink> <MdAccessTimeFilled size={20} /> Recent </SidebarLink>
-                    <SidebarLink> <MdPeopleAlt size={20} /> Shared </SidebarLink>
-                    <SidebarLink> <MdStar size={20} /> Favourites </SidebarLink>
+                    <SidebarLink to="/dashboard"> <MdCloudCircle size={20} /> My Drive </SidebarLink>
+                    <SidebarLink to="/dashboard/recent"> <MdAccessTimeFilled size={20} /> Recent </SidebarLink>
+                    <SidebarLink to="/dashboard/shared"> <MdPeopleAlt size={20} /> Shared </SidebarLink>
+                    <SidebarLink to="/dashboard/favourite"> <MdStar size={20} /> Favourites </SidebarLink>
                 </div>
             </div>
 
             <SignOutButton>
-                <Link href="/">
-                    <SidebarLink> <MdLogout /> Log out </SidebarLink>
-                </Link>
+                <SidebarLink to="/"> <MdLogout /> Log out </SidebarLink>
             </SignOutButton>
-
         </div>
     );
 }
