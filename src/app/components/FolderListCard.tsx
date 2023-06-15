@@ -1,9 +1,11 @@
+import Link from 'next/link';
 import React from 'react';
 import { AiFillFolder } from 'react-icons/ai';
 
 const FolderListCard: React.FC = () => {
+    const folderID = "Folder_name";
     return (
-        <div className='hover:drop-shadow-md'>
+        <Link className='hover:drop-shadow-md' href={`/dashboard/folders/${folderID}`}>
             <div className="flex w-full h-20 bg-white p-6 justify-between border-b-slate-200 border-b">
                 <div className='flex h-full gap-5 items-center'>
                     <AiFillFolder size={30} />
@@ -14,7 +16,7 @@ const FolderListCard: React.FC = () => {
                     <div className='text-sm font-medium'>20 Mb</div>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }
 
