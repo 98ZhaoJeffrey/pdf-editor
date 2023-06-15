@@ -1,11 +1,13 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import FolderGridCard from './FolderGridCard'
 import PDFGridCard from './PDFGridCard'
 
 import { BsGrid3X3Gap, BsListUl } from "react-icons/bs";
 import FolderListCard from './FolderListCard';
 import PDFListCard from './PDFListCard';
+
+import { ViewPreferenceContext } from '../contexts/ViewPreferenceContext';
 
 const GridView: React.FC = () => {
     return (
@@ -42,13 +44,13 @@ interface FolderDisplayProps {
 }
 
 const FolderDisplay: React.FC<FolderDisplayProps> = ({ category }) => {
-    const [gridView, setGridView] = useState<boolean>(true);
+    const { gridView, toggleView } = useContext(ViewPreferenceContext);
     return (
         <div className='pt-5 pl-14'>
             <div className='flex justify-between'>
                 <h1 className='text-title'>{category}</h1>
                 <button
-                    onClick={() => setGridView(prev => !prev)}
+                    onClick={toggleView}
                     className='rounded-full mr-20 mt-1 hover:bg-slate-200 p-5'
                     title={gridView ? 'Grid view' : 'List view'}
                 >

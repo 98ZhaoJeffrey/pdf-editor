@@ -1,5 +1,6 @@
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
+import { ViewPreferenceProvider } from '../contexts/ViewPreferenceContext';
 
 export default function RootLayout({
   children,
@@ -8,6 +9,7 @@ export default function RootLayout({
 }) {
 
   return (
+    <ViewPreferenceProvider>
       <div className='flex overflow-hidden bg-slate-100'>
         <Sidebar />
         {/* Main section */}
@@ -17,5 +19,7 @@ export default function RootLayout({
           <div className='w-full'>{children}</div>
         </div>
       </div>
+    </ViewPreferenceProvider>
+
   );
 }

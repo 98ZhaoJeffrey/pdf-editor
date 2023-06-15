@@ -9,9 +9,9 @@ const PDFListCard: React.FC = () => {
                     <AiFillFilePdf size={30} color='red' />
                     <h1 className='text-l font-medium'>File name</h1>
                 </div>
-                <div className='flex h-full items-center w-1/4 justify-around text-center'>
-                    <h2 className='text-sm font-medium'>2023-06-07</h2>
-                    <div className='text-sm font-medium'>20 Mb</div>
+                <div className='flex h-full items-center w-1/4 justify-between'>
+                    <h2 className='text-sm font-medium w-30'>2023-06-07</h2>
+                    <div className='text-sm font-medium w-20'>20 Mb</div>
                 </div>
             </div>
         </div>

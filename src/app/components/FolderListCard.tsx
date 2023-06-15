@@ -11,9 +11,9 @@ const FolderListCard: React.FC = () => {
                     <AiFillFolder size={30} />
                     <h1 className='text-l font-medium'>Folder name</h1>
                 </div>
-                <div className='flex h-full items-center w-1/4 justify-around'>
-                    <h2 className='text-sm font-medium'>2023-06-07</h2>
-                    <div className='text-sm font-medium'>20 Mb</div>
+                <div className='flex h-full items-center w-1/4 justify-between'>
+                <h2 className='text-sm font-medium w-30'>2023-06-07</h2>
+                    <div className='text-sm font-medium w-20'>―</div>
                 </div>
             </div>
         </Link>
