@@ -6,6 +6,7 @@ import AddFolderButton from './AddFolderButton';
 import AddFileButton from './AddFileButton';
 
 const Sidebar: React.FC = () => {
+
     return (
         <div className='h-screen bg-stone-950 w-72 p-5 flex justify-between flex-col flex-none'>
             <h1 className='text-description text-slate-300'>Untitled</h1>

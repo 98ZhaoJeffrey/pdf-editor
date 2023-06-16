@@ -1,10 +1,12 @@
 'use client'
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { MdCreateNewFolder } from 'react-icons/md';
+import { useParams } from 'next/navigation'
 
 function AddFolderButton(): JSX.Element {
   const [open, setOpen] = useState(false);
   const [folderName, setFolderName] = useState('');
+  const params = useParams();
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFolderName(e.target.value);
@@ -13,7 +15,12 @@ function AddFolderButton(): JSX.Element {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     // Perform folder creation logic
-    console.log('Creating folder:', folderName);
+    console.log("test")
+    if (params.folderID === undefined) {
+      console.log('Creating folder in my drive:', folderName);
+    } else {
+      console.log(`Creating folder in ${params.folderID}: ${folderName}`);
+    }
     closeModal();
     setFolderName("");
   };

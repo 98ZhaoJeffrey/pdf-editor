@@ -7,7 +7,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-
   return (
     <ViewPreferenceProvider>
       <div className='flex overflow-hidden bg-slate-100'>
