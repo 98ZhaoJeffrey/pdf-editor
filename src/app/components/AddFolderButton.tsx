@@ -3,6 +3,23 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { MdCreateNewFolder } from 'react-icons/md';
 import { useParams } from 'next/navigation'
 
+async function saveFolder(folder: any) {
+  const response = await fetch('/api/folders', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(folder)
+  });
+
+  if (!response.ok) {
+    alert("Something went wrong, please try again")
+  } else {
+    alert("Folder has been successfully created")
+  }
+  return await response.json();
+}
+
 function AddFolderButton(): JSX.Element {
   const [open, setOpen] = useState(false);
   const [folderName, setFolderName] = useState('');
@@ -12,15 +29,21 @@ function AddFolderButton(): JSX.Element {
     setFolderName(e.target.value);
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     // Perform folder creation logic
-    console.log("test")
-    if (params.folderID === undefined) {
-      console.log('Creating folder in my drive:', folderName);
-    } else {
-      console.log(`Creating folder in ${params.folderID}: ${folderName}`);
+    let parentID = null
+    if (params.folderID !== undefined) {
+      parentID = params.folderID
     }
+
+    const folder = {
+      name: folderName,
+      folderParentFolderId: parentID,
+    }
+
+    await saveFolder(folder)
+
     closeModal();
     setFolderName("");
   };

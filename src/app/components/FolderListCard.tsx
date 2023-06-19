@@ -3,7 +3,7 @@ import React from 'react';
 import { AiFillFolder } from 'react-icons/ai';
 
 const FolderListCard: React.FC = () => {
-    const folderID = "Folder_name";
+    const folderID = "6490d4b8cec69343651d0bd4";
     return (
         <Link className='hover:drop-shadow-md' href={`/dashboard/folders/${folderID}`}>
             <div className="flex w-full h-20 bg-white p-6 justify-between border-b-slate-200 border-b">
