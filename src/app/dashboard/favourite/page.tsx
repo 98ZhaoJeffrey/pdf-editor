@@ -3,7 +3,7 @@ import React from 'react'
 
 const Page: React.FC = () => {
     return (
-        <FolderDisplay category='Favourites'/>
+        <FolderDisplay category='Favourites' folders={[]} />
     );
 };
 

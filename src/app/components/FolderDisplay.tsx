@@ -4,13 +4,15 @@ import PDFGridCard from './PDFGridCard'
 import FolderListCard from './FolderListCard';
 import PDFListCard from './PDFListCard';
 import ClientFolderRender from './ClientFolderRender';
+import { Folder } from '@prisma/client';
 
-const GridView: React.FC = () => {
+const GridView: React.FC<{ folders: Array<Folder> }> = ({ folders }) => {
     return (
         <div className='overflow-y-scroll h-[76vh]'>
             <div className='flex flex-row flex-wrap gap-7'>
-                <FolderGridCard />
-                <FolderGridCard />
+                {folders && folders.map((folder) => (
+                    <FolderGridCard folderID={folder.id} lastAccessed={folder.lastUpdated} name={folder.name} />
+                ))}
                 <PDFGridCard />
                 <PDFGridCard />
                 <PDFGridCard />
@@ -18,15 +20,16 @@ const GridView: React.FC = () => {
                 <PDFGridCard />
             </div>
         </div>
-    )
-}
+    );
+};
 
-const ListView: React.FC = () => {
+const ListView: React.FC<{ folders: Array<Folder> }> = ({ folders }) => {
     return (
         <div className='overflow-y-scroll h-[75vh]'>
             <div className='flex flex-col'>
-                <FolderListCard />
-                <FolderListCard />
+                {folders && folders.map((folder) => (
+                    <FolderListCard folderID={folder.id} lastAccessed={folder.lastUpdated} name={folder.name} />
+                ))}
                 <PDFListCard />
                 <PDFListCard />
                 <PDFListCard />
@@ -37,11 +40,12 @@ const ListView: React.FC = () => {
 
 interface FolderDisplayProps {
     category: string;
+    folders: Array<Folder>
 }
 
-const FolderDisplay: React.FC<FolderDisplayProps> = ({ category }) => {
+const FolderDisplay: React.FC<FolderDisplayProps> = ({ category, folders }) => {
     return (
-        <ClientFolderRender GridView={<GridView />} ListView={<ListView />} category={category} />
+        <ClientFolderRender GridView={<GridView folders={folders} />} ListView={<ListView folders={folders} />} category={category} />
     )
 }
 
