@@ -48,7 +48,5 @@ export default async function Page({ params }: { params: { folderID: string } })
         }
     })
 
-    console.log(folders);
-
     return (<FolderDisplay category={folderName} folders={folders}/>)
 }
