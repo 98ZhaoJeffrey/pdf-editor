@@ -21,6 +21,7 @@ async function saveFolder(folder: any) {
 
 function AddFolderButton(): JSX.Element {
   const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [folderName, setFolderName] = useState('');
   const params = useParams();
   const router = useRouter();
@@ -31,6 +32,8 @@ function AddFolderButton(): JSX.Element {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+
     // Perform folder creation logic
     let parentID = null
     if (params.folderID !== undefined) {
@@ -49,6 +52,7 @@ function AddFolderButton(): JSX.Element {
 
     closeModal();
     setFolderName("");
+    setIsLoading(false);
   };
 
   const openModal = () => {
@@ -94,6 +98,7 @@ function AddFolderButton(): JSX.Element {
                 <button
                   type="submit"
                   className="px-4 py-2 text-sm text-white bg-blue-500 rounded"
+                  disabled={isLoading}
                 >
                   Create
                 </button>
