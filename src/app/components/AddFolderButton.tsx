@@ -3,6 +3,7 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { MdCreateNewFolder } from 'react-icons/md';
 import { useParams } from 'next/navigation'
 import { useRouter } from 'next/navigation';
+import FolderNameModal from './FolderNameModal';
 
 async function saveFolder(folder: any) {
   const response = await fetch('/api/folders', {
@@ -75,37 +76,14 @@ function AddFolderButton(): JSX.Element {
       </button>
 
       {open && (
-        <div className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-gray-800 bg-opacity-50">
-          <div className="bg-white rounded shadow-lg p-6">
-            <h2 className="text-lg font-semibold mb-4">Create Folder</h2>
-            <form onSubmit={handleSubmit}>
-              <input
-                type="text"
-                placeholder="Folder name"
-                className="w-full border border-gray-300 rounded px-3 py-2 mb-4"
-                value={folderName}
-                onChange={handleInputChange}
-                required
-              />
-              <div className="flex justify-end">
-                <button
-                  type="button"
-                  className="mr-2 px-4 py-2 text-sm text-gray-500"
-                  onClick={closeModal}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 text-sm text-white bg-blue-500 rounded"
-                  disabled={isLoading}
-                >
-                  Create
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+        <FolderNameModal
+          folderName={folderName}
+          isLoading={isLoading}
+          handleSubmit={handleSubmit}
+          handleInputChange={handleInputChange}
+          closeModal={closeModal}
+          isCreate={true}
+        />
       )}
     </>
   );
