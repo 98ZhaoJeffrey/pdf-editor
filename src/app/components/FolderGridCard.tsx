@@ -6,13 +6,14 @@ import ContextMenu from './FolderContextMenu';
 import FolderNameModal from './FolderNameModal';
 import { useRouter } from 'next/navigation';
 
-async function changeName(folder: any) {
-    const response = await fetch('/api/folders', {
-        method: 'PUT',
+async function changeName(folderName: string, folderID: string) {
+    const data = { name: folderName }
+    const response = await fetch(`/api/folders/${folderID}`, {
+        method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(folder)
+        body: JSON.stringify(data)
     });
 
     if (!response.ok) {
@@ -20,6 +21,17 @@ async function changeName(folder: any) {
     }
     return await response.json();
 }
+
+async function deleteFolder(folderID: string) {
+    try {
+        await fetch(`/api/folders/${folderID}`, {
+            method: 'DELETE',
+        });
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: string }> = ({ folderID, lastAccessed, name }) => {
     const [showContextMenu, setShowContextMenu] = useState(false);
@@ -37,12 +49,8 @@ const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: str
         e.preventDefault();
         setIsLoading(true);
 
-        const folder = {
-            name: folderName,
-            folderId: folderID,
-        }
 
-        await changeName(folder)
+        await changeName(folderName, folderID)
         router.refresh();
 
         closeModal();
@@ -63,7 +71,7 @@ const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: str
         setShowContextMenu(true);
     };
 
-    const handleContextMenuOption = (option: string) => {
+    const handleContextMenuOption = async (option: string) => {
         if (option === 'rename') {
             // Handle rename logic
             console.log('Rename option clicked');
@@ -71,6 +79,8 @@ const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: str
         } else if (option === 'delete') {
             // Handle delete logic
             console.log('Delete option clicked');
+            await deleteFolder(folderID)
+            router.refresh();
         }
         setShowContextMenu(false);
     };
