@@ -6,7 +6,7 @@ import ContextMenu from './FolderContextMenu';
 import FolderNameModal from './FolderNameModal';
 import { useRouter } from 'next/navigation';
 import { deleteFolder, changeName } from '../../utils/folder-action'
- 
+
 const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: string }> = ({ folderID, lastAccessed, name }) => {
     const [showContextMenu, setShowContextMenu] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
@@ -14,6 +14,10 @@ const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: str
     const [isLoading, setIsLoading] = useState(false);
     const [folderName, setFolderName] = useState('');
     const router = useRouter();
+    const [mousePosition, setMousePosition] = useState({
+        x: 0,
+        y: 0
+    })
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         setFolderName(e.target.value);
@@ -42,6 +46,10 @@ const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: str
 
     const handleContextMenu = (event: React.MouseEvent<HTMLDivElement>) => {
         event.preventDefault();
+        setMousePosition({
+            x: event.clientX,
+            y: event.clientY
+        })
         setShowContextMenu(true);
     };
 
@@ -90,7 +98,13 @@ const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: str
                     </div>
                     <div className='w-52 bg-slate-200 -mt-16 p-4 pl-6 rounded-b-3xl text-sm font-medium'>―</div>
                 </Link>
-                {showContextMenu && <ContextMenu onClose={() => setShowContextMenu(false)} onOptionSelect={handleContextMenuOption} />}
+                {showContextMenu &&
+                    <ContextMenu
+                        x={mousePosition.x}
+                        y={mousePosition.y}
+                        onClose={() => setShowContextMenu(false)}
+                        onOptionSelect={handleContextMenuOption}
+                    />}
             </div>
 
             {open && (
