@@ -1,8 +1,8 @@
 import React from 'react'
 import FolderGridCard from './FolderGridCard'
-import PDFGridCard from './PDFGridCard'
+import PDFGridCard from '../File/PDFGridCard'
 import FolderListCard from './FolderListCard';
-import PDFListCard from './PDFListCard';
+import PDFListCard from '../File/PDFListCard';
 import ClientFolderRender from './ClientFolderRender';
 import { Folder } from '@prisma/client';
 

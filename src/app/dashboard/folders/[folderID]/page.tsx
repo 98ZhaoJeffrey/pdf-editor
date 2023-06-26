@@ -1,4 +1,4 @@
-import FolderDisplay from '@/app/components/FolderDisplay'
+import FolderDisplay from '@/app/components/Folder/FolderDisplay'
 import { prisma } from '@/app/lib/prisma';
 import React from "react";
 import { auth } from '@clerk/nextjs';

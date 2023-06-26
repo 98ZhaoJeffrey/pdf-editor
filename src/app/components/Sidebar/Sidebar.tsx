@@ -2,8 +2,8 @@ import React from 'react';
 import SidebarLink from './SidebarLink';
 import { MdAccessTimeFilled, MdCloudCircle, MdLogout, MdPeopleAlt, MdStar } from 'react-icons/md';
 import { SignOutButton } from '@clerk/nextjs'
-import AddFolderButton from './AddFolderButton';
-import AddFileButton from './AddFileButton';
+import AddFolderButton from '../Folder/AddFolderButton';
+import AddFileButton from '../File/AddFileButton';
 
 const Sidebar: React.FC = () => {
 

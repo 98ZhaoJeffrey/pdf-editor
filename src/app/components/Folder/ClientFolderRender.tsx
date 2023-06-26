@@ -1,5 +1,5 @@
 'use client'
-import { ViewPreferenceContext } from '../contexts/ViewPreferenceContext';
+import { ViewPreferenceContext } from '../../contexts/ViewPreferenceContext';
 import { BsGrid3X3Gap, BsListUl } from "react-icons/bs";
 import React, { useContext } from 'react';
 

@@ -13,7 +13,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ onClose, onOptionSelect }) =>
   };
 
   return (
-    <div className="absolute z-10 top-full right-0 mt-2 flex flex-col bg-white border border-gray-300 rounded-md shadow-lg">
+    <div className="absolute z-10 -mt-10 right-0 flex flex-col bg-white border border-gray-300 rounded-md shadow-lg">
       <div
         onClick={() => handleContextMenuOption('rename')}
         className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"

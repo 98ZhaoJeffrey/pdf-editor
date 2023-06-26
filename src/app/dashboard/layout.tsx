@@ -1,5 +1,5 @@
-import Navbar from '../components/Navbar';
-import Sidebar from '../components/Sidebar';
+import Navbar from '../components/Navbar/Navbar';
+import Sidebar from '../components/Sidebar/Sidebar';
 import { ViewPreferenceProvider } from '../contexts/ViewPreferenceContext';
 
 export default function RootLayout({

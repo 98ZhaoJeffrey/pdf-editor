@@ -5,35 +5,9 @@ import { AiFillFolder } from 'react-icons/ai';
 import ContextMenu from './FolderContextMenu';
 import FolderNameModal from './FolderNameModal';
 import { useRouter } from 'next/navigation';
+import { deleteFolder, changeName } from '../../utils/folder-action'
 
-async function changeName(folderName: string, folderID: string) {
-    const data = { name: folderName }
-    const response = await fetch(`/api/folders/${folderID}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    });
-
-    if (!response.ok) {
-        alert("Something went wrong, please try again")
-    }
-    return await response.json();
-}
-
-async function deleteFolder(folderID: string) {
-    try {
-        await fetch(`/api/folders/${folderID}`, {
-            method: 'DELETE',
-        });
-    } catch (error) {
-        console.log(error)
-    }
-}
-
-
-const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: string }> = ({ folderID, lastAccessed, name }) => {
+const FolderListCard: React.FC<{ folderID: string, lastAccessed: Date, name: string }> = ({ folderID, lastAccessed, name }) => {
     const [showContextMenu, setShowContextMenu] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
     const [open, setOpen] = useState(false);
@@ -102,23 +76,19 @@ const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: str
         <>
             <div ref={cardRef} onContextMenu={handleContextMenu} className='relative'>
                 <Link className='hover:drop-shadow-md' href={`/dashboard/folders/${folderID}`}>
-                    <div
-                        className="flex flex-col w-52 h-56 bg-white rounded-3xl mb-8 p-6  justify-between">
-                        <AiFillFolder size={50} />
-
-                        <div>
-                            <h1 className='text-l font-bold'>{name}</h1>
-                            <h2 className='mt-1 mb-8 text-sm font-medium text-slate-400'>
-                                {lastAccessed ? lastAccessed.toLocaleDateString() : ''}
-                            </h2>
+                    <div className="flex w-full h-20 bg-white p-6 justify-between border-b-slate-200 border-b">
+                        <div className='flex h-full gap-5 items-center'>
+                            <AiFillFolder size={30} />
+                            <h1 className='text-l font-medium'>{name}</h1>
                         </div>
-
+                        <div className='flex h-full items-center w-1/4 justify-between'>
+                            <h2 className='text-sm font-medium w-30'>{lastAccessed ? lastAccessed.toLocaleDateString() : ''}</h2>
+                            <div className='text-sm font-medium w-20'>―</div>
+                        </div>
                     </div>
-                    <div className='w-52 bg-slate-200 -mt-16 p-4 pl-6 rounded-b-3xl text-sm font-medium'>―</div>
                 </Link>
                 {showContextMenu && <ContextMenu onClose={() => setShowContextMenu(false)} onOptionSelect={handleContextMenuOption} />}
             </div>
-
             {open && (
                 <FolderNameModal
                     folderName={folderName}
@@ -132,6 +102,6 @@ const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: str
         </>
 
     );
-};
+}
 
-export default FolderGridCard;
+export default FolderListCard;
