@@ -11,31 +11,31 @@ datasource db {
 }
 
 model Folder {
-  id                String    @id @default(auto()) @map("_id") @db.ObjectId
-  name              String
-  ownerId           String    @unique
-  creationDate      DateTime  @default(now())
-  lastUpdated       DateTime  @updatedAt
-  files             File[]
-  folderParentFolderId    String? @db.ObjectId
-  folderParentFolder  Folder? @relation("folderParent", fields: [folderParentFolderId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  folders           Folder[]  @relation("folderParent")
+  id                   String   @id @default(auto()) @map("_id") @db.ObjectId
+  name                 String
+  ownerId              String   
+  creationDate         DateTime @default(now())
+  lastUpdated          DateTime @updatedAt
+  files                File[]
+  folderParentFolderId String?  @db.ObjectId
+  folderParentFolder   Folder?  @relation("folderParent", fields: [folderParentFolderId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  folders              Folder[] @relation("folderParent")
 
-  @@map("folders")
   @@index([name, ownerId, folderParentFolderId])
+  @@map("folders")
 }
 
 model File {
-  id                String    @id @default(auto()) @map("_id") @db.ObjectId
-  name              String
-  ownerId           String    @unique
-  creationDate      DateTime  @default(now())
-  lastUpdated       DateTime  @updatedAt
-  size              Int
-  fileUrl           String
-  fileParentFolderId    String    @db.ObjectId
-  fileParentFolder      Folder    @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  id                 String      @id @default(auto()) @map("_id") @db.ObjectId
+  name               String
+  ownerId            String      
+  creationDate       DateTime    @default(now())
+  lastUpdated        DateTime    @updatedAt
+  size               Int
+  fileContent        Bytes
+  fileParentFolderId String?      @db.ObjectId
+  fileParentFolder   Folder?      @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@map("files")
   @@index([name, ownerId, fileParentFolderId])
+  @@map("files")
 }

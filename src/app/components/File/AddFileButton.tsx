@@ -1,12 +1,47 @@
 'use client'
 import React, { ChangeEvent } from 'react'
 import { MdAdd } from 'react-icons/md'
+import { useParams } from 'next/navigation'
+import { useRouter } from 'next/navigation';
 
 function AddFileButton() {
-    const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
+    const params = useParams();
+    const router = useRouter();
+
+    const handleFileUpload = async (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
         // Perform upload logic with the selected file here
-        console.log('Selected file:', file?.name);
+        if (file) {
+
+            const maxSizeInBytes = 16 * 1024 * 1024;
+
+            if (file.size >= maxSizeInBytes) {
+                console.log("file exceeds max size")
+                return
+            }
+
+            let parentID = null
+            if (params.folderID !== undefined) {
+                parentID = params.folderID
+            } else {
+                router.replace('/dashboard');
+            }
+
+            try {
+                const formData = new FormData();
+                formData.set('file', file);
+
+                const response = await fetch(`/api/files/${parentID}`, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!response.ok) throw new Error(await response.text())
+            } catch (e: any) {
+                // Handle errors here
+                console.error(e)
+            }
+        }
     };
 
     const handleClick = () => {
