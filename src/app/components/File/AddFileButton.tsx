@@ -41,6 +41,8 @@ function AddFileButton() {
                 // Handle errors here
                 console.error(e)
             }
+            alert("done")
+            router.refresh();
         }
     };
 

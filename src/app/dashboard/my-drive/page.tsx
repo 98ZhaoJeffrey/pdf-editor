@@ -19,8 +19,26 @@ const Page: React.FC = async () => {
         }
     })
 
+    const files = await prisma.file.findMany({
+        where: {
+            fileParentFolderId: {
+                equals: null,
+            },
+            AND: {
+                ownerId: {
+                    equals: String(userId)
+                }
+            }
+        },
+        select: {
+            name: true,
+            lastUpdated: true,
+            size: true
+        }
+    })
+
     return (
-        <FolderDisplay category='My Drive' folders={folders} />
+        <FolderDisplay category='My Drive' folders={folders} files={files} />
     );
 };
 

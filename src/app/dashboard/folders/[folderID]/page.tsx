@@ -48,5 +48,23 @@ export default async function Page({ params }: { params: { folderID: string } })
         }
     })
 
-    return (<FolderDisplay category={folderName} folders={folders}/>)
+    const files = await prisma.file.findMany({
+        where: {
+            fileParentFolderId: {
+                equals: folderID,
+            },
+            AND: {
+                ownerId: {
+                    equals: String(userId)
+                }
+            }
+        },
+        select: {
+            name: true,
+            lastUpdated: true,
+            size: true
+        }
+    })
+
+    return (<FolderDisplay category={folderName} folders={folders} files={files}/>)
 }
