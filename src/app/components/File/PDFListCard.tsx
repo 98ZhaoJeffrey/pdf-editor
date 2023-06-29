@@ -11,7 +11,7 @@ const PDFListCard: React.FC<{ name: string, lastUpdated: Date, size: number }> =
                 </div>
                 <div className='flex h-full items-center w-1/4 justify-between'>
                     <h2 className='text-sm font-medium w-30'>{lastUpdated ? lastUpdated.toLocaleDateString() : ''}</h2>
-                    <div className='text-sm font-medium w-20'>{(size / 1000).toFixed(1)} Mb</div>
+                    <div className='text-sm font-medium w-20'>{(size / 1000000).toFixed(1)} Mb</div>
                 </div>
             </div>
         </div>

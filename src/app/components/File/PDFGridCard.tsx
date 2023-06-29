@@ -11,7 +11,7 @@ const PDFGridCard: React.FC<{ name: string, lastUpdated: Date, size: number }> =
                     <h2 className='mt-1 mb-8 text-sm font-medium text-slate-400'>{lastUpdated ? lastUpdated.toLocaleDateString() : ''}</h2>
                 </div>
             </div>
-            <div className='w-52 bg-slate-200 -mt-16 p-4 pl-6 rounded-b-3xl text-sm font-medium'>{(size / 1000).toFixed(1)} Mb</div>
+            <div className='w-52 bg-slate-200 -mt-16 p-4 pl-6 rounded-b-3xl text-sm font-medium'>{(size / 1000000).toFixed(1)} Mb</div>
         </div>
     );
 }
