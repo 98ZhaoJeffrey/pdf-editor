@@ -1,21 +1,24 @@
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
+import Navbar from '../components/Navbar/Navbar';
+import Sidebar from '../components/Sidebar/Sidebar';
+import { ViewPreferenceProvider } from '../contexts/ViewPreferenceContext';
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <div className='flex overflow-hidden bg-slate-100'>
-      <Sidebar />
-      {/* Main section */}
-      <div className="w-full h-screen flex flex-col">
-        {/* Nav bar */}
-        <Navbar />
-        <div className='w-full'>{children}</div>
+    <ViewPreferenceProvider>
+      <div className='flex overflow-hidden bg-slate-100'>
+        <Sidebar />
+        {/* Main section */}
+        <div className='w-full h-screen flex flex-col'>
+          {/* Nav bar */}
+          <Navbar />
+          <div className='w-full'>{children}</div>
+        </div>
       </div>
+    </ViewPreferenceProvider>
 
-    </div>
-  )
+  );
 }
