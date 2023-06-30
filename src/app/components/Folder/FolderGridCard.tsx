@@ -89,7 +89,7 @@ const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: str
                         <AiFillFolder size={50} />
 
                         <div>
-                            <h1 className='text-l font-bold'>{name}</h1>
+                            <h1 className='text-l font-bold truncate'>{name}</h1>
                             <h2 className='mt-1 mb-8 text-sm font-medium text-slate-400'>
                                 {lastAccessed ? lastAccessed.toLocaleDateString() : ''}
                             </h2>

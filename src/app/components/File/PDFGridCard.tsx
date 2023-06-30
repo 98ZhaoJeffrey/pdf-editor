@@ -7,7 +7,7 @@ const PDFGridCard: React.FC<{ name: string, lastUpdated: Date, size: number }> =
             <div className="flex flex-col w-52 h-56 max-h-56 bg-white rounded-3xl mb-8 p-6 justify-between">
                 <AiFillFilePdf size={50} color='red' />
                 <div>
-                    <h1 className='text-l font-bold'>{name}</h1>
+                    <h1 className='text-l font-bold truncate'>{name}</h1>
                     <h2 className='mt-1 mb-8 text-sm font-medium text-slate-400'>{lastUpdated ? lastUpdated.toLocaleDateString() : ''}</h2>
                 </div>
             </div>
