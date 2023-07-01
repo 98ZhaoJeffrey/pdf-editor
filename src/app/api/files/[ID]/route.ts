@@ -74,6 +74,7 @@ export async function DELETE(request: Request, { params }: { params: { ID: strin
                 id: params.ID,
             },
         });
+        return NextResponse.json({ success: true })
     } catch (error) {
         return NextResponse.json(error)
     }
