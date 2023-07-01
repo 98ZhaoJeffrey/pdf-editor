@@ -2,17 +2,17 @@
 import Link from 'next/link';
 import React, { useState, useEffect, useRef, ChangeEvent, FormEvent } from 'react';
 import { AiFillFolder } from 'react-icons/ai';
-import ContextMenu from './FolderContextMenu';
-import FolderNameModal from './FolderNameModal';
+import ContextMenu from '../Elements/ContextMenu';
+import NameModal from '../Elements/NameModal';
 import { useRouter } from 'next/navigation';
-import { deleteFolder, changeName } from '../../utils/folder-action'
+import { deleteFolder, changeFolderName } from '../../utils/dashboard-action'
 
 const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: string }> = ({ folderID, lastAccessed, name }) => {
     const [showContextMenu, setShowContextMenu] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [folderName, setFolderName] = useState('');
+    const [folderName, setFolderName] = useState(name);
     const router = useRouter();
     const [mousePosition, setMousePosition] = useState({
         x: 0,
@@ -28,7 +28,7 @@ const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: str
         setIsLoading(true);
 
 
-        await changeName(folderName, folderID)
+        await changeFolderName(folderName, folderID)
         router.refresh();
 
         closeModal();
@@ -100,6 +100,7 @@ const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: str
                 </Link>
                 {showContextMenu &&
                     <ContextMenu
+                        isFile={false}
                         x={mousePosition.x}
                         y={mousePosition.y}
                         onClose={() => setShowContextMenu(false)}
@@ -108,8 +109,8 @@ const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: str
             </div>
 
             {open && (
-                <FolderNameModal
-                    folderName={folderName}
+                <NameModal
+                    name={folderName}
                     isLoading={isLoading}
                     handleSubmit={handleSubmit}
                     handleInputChange={handleInputChange}

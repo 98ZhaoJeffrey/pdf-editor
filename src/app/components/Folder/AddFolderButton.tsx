@@ -3,7 +3,7 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { MdCreateNewFolder } from 'react-icons/md';
 import { useParams } from 'next/navigation'
 import { useRouter } from 'next/navigation';
-import FolderNameModal from './FolderNameModal';
+import NameModal from '../Elements/NameModal';
 
 async function saveFolder(folder: any) {
   const response = await fetch('/api/folders', {
@@ -76,8 +76,8 @@ function AddFolderButton(): JSX.Element {
       </button>
 
       {open && (
-        <FolderNameModal
-          folderName={folderName}
+        <NameModal
+          name={folderName}
           isLoading={isLoading}
           handleSubmit={handleSubmit}
           handleInputChange={handleInputChange}

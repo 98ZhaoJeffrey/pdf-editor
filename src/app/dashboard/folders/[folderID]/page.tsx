@@ -62,9 +62,10 @@ export default async function Page({ params }: { params: { folderID: string } })
         select: {
             name: true,
             lastUpdated: true,
-            size: true
+            size: true,
+            id: true
         }
     })
 
-    return (<FolderDisplay category={folderName} folders={folders} files={files}/>)
+    return (<FolderDisplay category={folderName} folders={folders} files={files} />)
 }

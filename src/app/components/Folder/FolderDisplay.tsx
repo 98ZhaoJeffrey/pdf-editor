@@ -9,7 +9,8 @@ import { Folder } from '@prisma/client';
 interface File {
     name: string,
     lastUpdated: Date,
-    size: number
+    size: number,
+    id: string
 }
 
 const GridView: React.FC<{ folders: Array<Folder>, files: Array<File> }> = ({ folders, files }) => {
@@ -20,7 +21,7 @@ const GridView: React.FC<{ folders: Array<Folder>, files: Array<File> }> = ({ fo
                     <FolderGridCard folderID={folder.id} lastAccessed={folder.lastUpdated} name={folder.name} />
                 ))}
                 {files && files.map((file) => (
-                    <PDFGridCard name={file.name} lastUpdated={file.lastUpdated} size={file.size} />
+                    <PDFGridCard name={file.name} lastUpdated={file.lastUpdated} size={file.size} fileID={file.id} />
                 ))}
             </div>
         </div>
@@ -35,7 +36,7 @@ const ListView: React.FC<{ folders: Array<Folder>, files: Array<File> }> = ({ fo
                     <FolderListCard folderID={folder.id} lastAccessed={folder.lastUpdated} name={folder.name} />
                 ))}
                 {files && files.map((file) => (
-                    <PDFListCard name={file.name} lastUpdated={file.lastUpdated} size={file.size} />
+                    <PDFListCard name={file.name} lastUpdated={file.lastUpdated} size={file.size} fileID={file.id} />
                 ))}
             </div>
         </div>
