@@ -6,6 +6,7 @@ import ContextMenu from '../Elements/ContextMenu';
 import NameModal from '../Elements/NameModal';
 import { useRouter } from 'next/navigation';
 import { deleteFolder, changeFolderName } from '../../utils/dashboard-action'
+import { handleDragEnd, handleDragEnter, handleDragLeave, handleDragOver, handleDragStart, handleDrop } from '@/app/utils/drag-actions';
 
 const FolderListCard: React.FC<{ folderID: string, lastAccessed: Date, name: string }> = ({ folderID, lastAccessed, name }) => {
     const [showContextMenu, setShowContextMenu] = useState(false);
@@ -82,9 +83,21 @@ const FolderListCard: React.FC<{ folderID: string, lastAccessed: Date, name: str
 
     return (
         <>
-            <div ref={cardRef} onContextMenu={handleContextMenu} className='relative'>
-                <Link className='hover:drop-shadow-md' href={`/dashboard/folders/${folderID}`}>
-                    <div className="flex w-full h-20 bg-white p-6 justify-between border-b-slate-200 border-b hover:bg-slate-200">
+            <div ref={cardRef}
+                onContextMenu={handleContextMenu}
+                onDragEnter={handleDragEnter}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={async (e) => {
+                    await handleDrop(e, folderID, false);
+                    router.refresh();
+                }}
+                onDragStart={(e) => handleDragStart(e, folderID)}
+                onDragEnd={handleDragEnd}
+                className='relative'
+                id={folderID}>
+                <Link className='hover:drop-shadow-md' href={`/dashboard/folders/${folderID}`} draggable>
+                    <div className="flex w-full h-20 bg-white p-6 justify-between border-b-slate-200 border-b hover:bg-blue-50">
                         <div className='flex h-full gap-5 items-center'>
                             <AiFillFolder size={30} />
                             <h1 className='text-l font-medium truncate'>{name}</h1>

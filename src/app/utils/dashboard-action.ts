@@ -72,3 +72,46 @@ export async function downloadFile(fileID: string, fileName: string) {
         console.error('Error downloading file:', response.statusText);
     }
 }
+
+export async function changeFolderParent(parentFolderID: string, folderID: string, extract: boolean) {
+    let data;
+    if (parentFolderID === 'null'){
+        return
+    }
+    if (extract) {
+        const response = await fetch(`/api/folders/${parentFolderID}`, {
+            method: 'GET'
+        });
+        if (response.ok) {
+            const result = await response.json();
+            const folderParentFolderId = result.folderParentFolderId;
+            data = {folderParentFolderId: folderParentFolderId};
+        } else {
+            throw new Error(`Error: ${response.status}`);
+        }
+    } else {
+        data = { folderParentFolderId: parentFolderID };
+    }
+
+    if (parentFolderID === folderID) {
+        return;
+    }
+
+    const updateResponse = await fetch(`/api/folders/${folderID}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+
+    if (!updateResponse.ok) {
+        throw new Error("Something went wrong, please try again");
+    }
+
+    try {
+        return await updateResponse.json();
+    } catch (error) {
+        throw new Error("Failed to parse JSON response");
+    }
+}

@@ -1,6 +1,22 @@
 import { prisma } from "../../../lib/prisma"
 import { NextResponse } from "next/server";
 
+export async function GET(request: Request, { params }: { params: { folderID: string } }) {
+  try {
+    const parent = await prisma.folder.findUnique({
+      where: {
+        id: params.folderID
+      },
+      select: {
+        folderParentFolderId: true,
+      }
+    })
+    return NextResponse.json({ folderParentFolderId: parent?.folderParentFolderId })
+  } catch (e) {
+    throw new Error('Failed to obtain parent')
+  }
+}
+
 async function deleteFile(fileID: string) {
   await prisma.file.delete({
     where: {
@@ -52,7 +68,6 @@ export async function DELETE(request: Request, { params }: { params: { folderID:
 
 export async function PATCH(request: Request, { params }: { params: { folderID: string } }) {
   const res = await request.json()
-
   try {
     await prisma.folder.update({
       where: {
