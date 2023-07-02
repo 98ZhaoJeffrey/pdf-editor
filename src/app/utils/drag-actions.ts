@@ -18,6 +18,7 @@ export const handleDragEnter = (event: React.DragEvent<HTMLElement>) => {
     const targetFolder = event.currentTarget;
 
     // Add CSS classes or styles to indicate the potential drop target
+    targetFolder.firstElementChild?.firstElementChild?.classList.remove('bg-white');
     targetFolder.firstElementChild?.firstElementChild?.classList.add('bg-blue-300');
 };
 
@@ -40,6 +41,7 @@ export const handleDragLeave = (event: React.DragEvent<HTMLElement>) => {
     // Remove the CSS class only if the mouse pointer is leaving the target folder
     if (isLeavingTargetFolder) {
         targetFolder.firstElementChild?.firstElementChild?.classList.remove('bg-blue-300');
+        targetFolder.firstElementChild?.firstElementChild?.classList.add('bg-white');
     }
 };
 
@@ -48,6 +50,7 @@ export const handleDrop = async (event: React.DragEvent<HTMLElement>, id: string
     event.preventDefault();
     const draggedFolderID = event.dataTransfer.getData('text/plain');
     event.currentTarget.firstElementChild?.firstElementChild?.classList.remove('bg-blue-300');
+    event.currentTarget.firstElementChild?.firstElementChild?.classList.add('bg-white');
     // Move the dragged folder into the target folder and update the folder structure accordingly
     await changeFolderParent(id, draggedFolderID, extract);
     console.log(`Moved ${draggedFolderID} into ${id}`)
