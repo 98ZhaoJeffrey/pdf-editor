@@ -5,6 +5,7 @@ import { AiFillFilePdf } from 'react-icons/ai';
 import ContextMenu from '../Elements/ContextMenu';
 import NameModal from '../Elements/NameModal';
 import { changeFileName, deleteFile, downloadFile } from '@/app/utils/dashboard-action';
+import { handleDragEnd, handleDragOver, handleDragStart } from '@/app/utils/drag-actions';
 
 const PDFGridCard: React.FC<{ name: string, lastUpdated: Date, size: number, fileID: string }> = ({ name, lastUpdated, size, fileID }) => {
     const [showContextMenu, setShowContextMenu] = useState(false);
@@ -62,7 +63,7 @@ const PDFGridCard: React.FC<{ name: string, lastUpdated: Date, size: number, fil
             console.log('Delete option clicked');
             await deleteFile(fileID)
             router.refresh();
-        } else  if (option === 'download') {
+        } else if (option === 'download') {
             // handle download
             await downloadFile(fileID, name)
         }
@@ -84,8 +85,12 @@ const PDFGridCard: React.FC<{ name: string, lastUpdated: Date, size: number, fil
 
     return (
         <>
-            <div ref={cardRef} onContextMenu={handleContextMenu} className='relative'>
-                <div className='hover:drop-shadow-md'>
+            <div ref={cardRef}
+                onContextMenu={handleContextMenu}
+                className='relative'
+                onDragStart={(e) => handleDragStart(e, fileID, true)}
+                onDragEnd={handleDragEnd}>
+                <div className='hover:drop-shadow-md' draggable>
                     <div className="flex flex-col w-52 h-56 max-h-56 bg-white rounded-3xl mb-8 p-6 justify-between">
                         <AiFillFilePdf size={50} color='red' />
                         <div>

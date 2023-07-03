@@ -5,6 +5,7 @@ import { AiFillFilePdf } from 'react-icons/ai';
 import ContextMenu from '../Elements/ContextMenu';
 import NameModal from '../Elements/NameModal';
 import { changeFileName, deleteFile, downloadFile } from '@/app/utils/dashboard-action';
+import { handleDragEnd, handleDragStart } from '@/app/utils/drag-actions';
 
 const PDFListCard: React.FC<{ name: string, lastUpdated: Date, size: number, fileID: string }> = ({ name, lastUpdated, size, fileID }) => {
 
@@ -86,8 +87,12 @@ const PDFListCard: React.FC<{ name: string, lastUpdated: Date, size: number, fil
 
     return (
         <>
-            <div ref={cardRef} onContextMenu={handleContextMenu} className='relative'>
-                <div className='hover:drop-shadow-md'>
+            <div ref={cardRef}
+                onContextMenu={handleContextMenu}
+                className='relative'
+                onDragStart={(e) => handleDragStart(e, fileID, true)}
+                onDragEnd={handleDragEnd}>
+                <div className='hover:drop-shadow-md' draggable>
                     <div className="flex w-full h-20 bg-white p-6 justify-between border-b-slate-200 border-b">
                         <div className='flex h-full gap-5 items-center'>
                             <AiFillFilePdf size={30} color='red' />

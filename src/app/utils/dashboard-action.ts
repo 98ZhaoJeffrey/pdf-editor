@@ -73,9 +73,9 @@ export async function downloadFile(fileID: string, fileName: string) {
     }
 }
 
-export async function changeFolderParent(parentFolderID: string, folderID: string, extract: boolean) {
+export async function changeFolderParent(parentFolderID: string, ID: string, extract: boolean, isFile: boolean) {
     let data;
-    if (parentFolderID === 'null'){
+    if (parentFolderID === 'null') {
         return
     }
     if (extract) {
@@ -85,25 +85,37 @@ export async function changeFolderParent(parentFolderID: string, folderID: strin
         if (response.ok) {
             const result = await response.json();
             const folderParentFolderId = result.folderParentFolderId;
-            data = {folderParentFolderId: folderParentFolderId};
+            data = isFile ? { fileParentFolderId: folderParentFolderId } : { folderParentFolderId: folderParentFolderId };
         } else {
             throw new Error(`Error: ${response.status}`);
         }
     } else {
-        data = { folderParentFolderId: parentFolderID };
+        data = isFile ? { fileParentFolderId: parentFolderID } : { folderParentFolderId: parentFolderID };
     }
 
-    if (parentFolderID === folderID) {
+    if (parentFolderID === ID) {
         return;
     }
 
-    const updateResponse = await fetch(`/api/folders/${folderID}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    });
+    let updateResponse;
+    if (isFile) {
+        updateResponse = await fetch(`/api/files/${ID}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+    }
+    else {
+        updateResponse = await fetch(`/api/folders/${ID}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+    }
 
     if (!updateResponse.ok) {
         throw new Error("Something went wrong, please try again");

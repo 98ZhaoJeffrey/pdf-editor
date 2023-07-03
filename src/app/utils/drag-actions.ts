@@ -1,9 +1,13 @@
 import { changeFolderParent } from "./dashboard-action";
 
-export const handleDragStart = (event: React.DragEvent<HTMLElement>, id: string) => {
+export const handleDragStart = (event: React.DragEvent<HTMLElement>, id: string, isFile: boolean) => {
     event.dataTransfer.setData('text/plain', id);
+    event.dataTransfer.setData('application/json', JSON.stringify({ isFile }));
     event.currentTarget.classList.add('opacity-0');
-    document.getElementById('text-title')?.classList.add('border')
+    const textTitle = document.getElementById('text-title');
+    if (textTitle) {
+        textTitle.classList.add('border');
+    }
 };
 
 export const handleDragEnd = (event: React.DragEvent<HTMLElement>) => {
@@ -48,10 +52,15 @@ export const handleDragLeave = (event: React.DragEvent<HTMLElement>) => {
 
 export const handleDrop = async (event: React.DragEvent<HTMLElement>, id: string, extract: boolean) => {
     event.preventDefault();
-    const draggedFolderID = event.dataTransfer.getData('text/plain');
+    const draggedElementID = event.dataTransfer.getData('text/plain');
     event.currentTarget.firstElementChild?.firstElementChild?.classList.remove('bg-blue-300');
     event.currentTarget.firstElementChild?.firstElementChild?.classList.add('bg-white');
+
+    const isFileData = event.dataTransfer.getData('application/json');
+    const isFile = JSON.parse(isFileData).isFile;
+
     // Move the dragged folder into the target folder and update the folder structure accordingly
-    await changeFolderParent(id, draggedFolderID, extract);
-    console.log(`Moved ${draggedFolderID} into ${id}`)
+    await changeFolderParent(id, draggedElementID, extract, isFile);
+
+    console.log(`Moved ${draggedElementID} into ${id}`);
 };

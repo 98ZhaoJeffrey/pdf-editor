@@ -92,7 +92,7 @@ const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: str
                     await handleDrop(e, folderID, false);
                     router.refresh();
                 }}
-                onDragStart={(e) => handleDragStart(e, folderID)}
+                onDragStart={(e) => handleDragStart(e, folderID, false)}
                 onDragEnd={handleDragEnd}
                 className='relative'
                 id={folderID}>
