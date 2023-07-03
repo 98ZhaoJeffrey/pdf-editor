@@ -2,17 +2,18 @@
 import Link from 'next/link';
 import React, { useState, useEffect, useRef, ChangeEvent, FormEvent } from 'react';
 import { AiFillFolder } from 'react-icons/ai';
-import ContextMenu from './FolderContextMenu';
-import FolderNameModal from './FolderNameModal';
+import ContextMenu from '../Elements/ContextMenu';
+import NameModal from '../Elements/NameModal';
 import { useRouter } from 'next/navigation';
-import { deleteFolder, changeName } from '../../utils/folder-action'
+import { deleteFolder, changeFolderName } from '../../utils/dashboard-action'
+import { handleDragEnd, handleDragEnter, handleDragLeave, handleDragOver, handleDragStart, handleDrop } from '@/app/utils/drag-actions';
 
 const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: string }> = ({ folderID, lastAccessed, name }) => {
     const [showContextMenu, setShowContextMenu] = useState(false);
     const cardRef = useRef<HTMLDivElement>(null);
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [folderName, setFolderName] = useState('');
+    const [folderName, setFolderName] = useState(name);
     const router = useRouter();
     const [mousePosition, setMousePosition] = useState({
         x: 0,
@@ -28,7 +29,7 @@ const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: str
         setIsLoading(true);
 
 
-        await changeName(folderName, folderID)
+        await changeFolderName(folderName, folderID)
         router.refresh();
 
         closeModal();
@@ -82,14 +83,26 @@ const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: str
 
     return (
         <>
-            <div ref={cardRef} onContextMenu={handleContextMenu} className='relative'>
-                <Link className='hover:drop-shadow-md' href={`/dashboard/folders/${folderID}`}>
+            <div ref={cardRef}
+                onContextMenu={handleContextMenu}
+                onDragEnter={handleDragEnter}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={async (e) => {
+                    await handleDrop(e, folderID, false);
+                    router.refresh();
+                }}
+                onDragStart={(e) => handleDragStart(e, folderID, false)}
+                onDragEnd={handleDragEnd}
+                className='relative'
+                id={folderID}>
+                <Link className='hover:drop-shadow-md' href={`/dashboard/folders/${folderID}`} draggable>
                     <div
                         className="flex flex-col w-52 h-56 bg-white rounded-3xl mb-8 p-6  justify-between">
                         <AiFillFolder size={50} />
 
                         <div>
-                            <h1 className='text-l font-bold'>{name}</h1>
+                            <h1 className='text-l font-bold truncate'>{name}</h1>
                             <h2 className='mt-1 mb-8 text-sm font-medium text-slate-400'>
                                 {lastAccessed ? lastAccessed.toLocaleDateString() : ''}
                             </h2>
@@ -100,6 +113,7 @@ const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: str
                 </Link>
                 {showContextMenu &&
                     <ContextMenu
+                        isFile={false}
                         x={mousePosition.x}
                         y={mousePosition.y}
                         onClose={() => setShowContextMenu(false)}
@@ -108,8 +122,8 @@ const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: str
             </div>
 
             {open && (
-                <FolderNameModal
-                    folderName={folderName}
+                <NameModal
+                    name={folderName}
                     isLoading={isLoading}
                     handleSubmit={handleSubmit}
                     handleInputChange={handleInputChange}

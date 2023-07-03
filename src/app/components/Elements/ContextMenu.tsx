@@ -2,13 +2,14 @@
 import React from 'react';
 
 interface ContextMenuProps {
+  isFile: boolean,
   x: number,
   y: number,
   onClose: () => void;
   onOptionSelect: (option: string) => void;
 }
 
-const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onClose, onOptionSelect }) => {
+const ContextMenu: React.FC<ContextMenuProps> = ({ isFile, x, y, onClose, onOptionSelect }) => {
 
   var posX;
   var posY;
@@ -34,6 +35,12 @@ const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, onClose, onOptionSelect
       >
         <span className="mr-2">Delete</span>
       </div>
+      {isFile && <div
+        onClick={() => handleContextMenuOption('download')}
+        className="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"
+      >
+        <span className="mr-2">Download</span>
+      </div>}
     </div>
   );
 };

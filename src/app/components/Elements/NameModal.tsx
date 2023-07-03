@@ -1,8 +1,8 @@
 'use client'
 import React, { ChangeEvent, FormEvent } from 'react';
 
-interface FolderNameModalProps {
-  folderName: string;
+interface NameModalProps {
+  name: string;
   isLoading: boolean;
   handleSubmit: (e: FormEvent) => void;
   handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -10,8 +10,8 @@ interface FolderNameModalProps {
   isCreate: boolean;
 }
 
-const FolderNameModal: React.FC<FolderNameModalProps> = ({
-  folderName,
+const NameModal: React.FC<NameModalProps> = ({
+  name,
   isLoading,
   handleSubmit,
   handleInputChange,
@@ -21,13 +21,13 @@ const FolderNameModal: React.FC<FolderNameModalProps> = ({
   return (
     <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full bg-gray-800 bg-opacity-50 z-50">
       <div className="bg-white rounded shadow-lg p-6">
-        <h2 className="text-lg font-semibold mb-4">{isCreate ? 'Create Folder' : 'Rename Folder'}</h2>
+        <h2 className="text-lg font-semibold mb-4">{isCreate ? 'Create Folder' : 'Rename'}</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            placeholder="Folder name"
+            placeholder="new name"
             className="w-full border border-gray-300 rounded px-3 py-2 mb-4"
-            value={folderName}
+            value={name}
             onChange={handleInputChange}
             required
           />
@@ -53,4 +53,4 @@ const FolderNameModal: React.FC<FolderNameModalProps> = ({
   );
 };
 
-export default FolderNameModal;
+export default NameModal;

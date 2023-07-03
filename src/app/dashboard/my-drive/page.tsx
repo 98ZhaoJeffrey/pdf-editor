@@ -33,7 +33,8 @@ const Page: React.FC = async () => {
         select: {
             name: true,
             lastUpdated: true,
-            size: true
+            size: true,
+            id: true
         }
     })
 

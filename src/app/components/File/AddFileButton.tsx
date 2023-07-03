@@ -41,7 +41,6 @@ function AddFileButton() {
                 // Handle errors here
                 console.error(e)
             }
-            alert("done")
             router.refresh();
         }
     };
@@ -58,12 +57,16 @@ function AddFileButton() {
     };
 
     return (
-        <button className='text-white w-full text-center p-5 rounded-xl hover:bg-emerald-600 hover:text-white font-medium'
-            onClick={handleClick}>
-            <div className='flex items-center justify-start gap-3'>
-                <MdAdd size={20} /> New File
-            </div>
-        </button>
+        <>
+            <button className='text-white w-full text-center p-5 rounded-xl hover:bg-emerald-600 hover:text-white font-medium'
+                onClick={handleClick}>
+                <div className='flex items-center justify-start gap-3'>
+                    <MdAdd size={20} /> New File
+                </div>
+            </button>
+            
+        </>
+
     )
 }
 
