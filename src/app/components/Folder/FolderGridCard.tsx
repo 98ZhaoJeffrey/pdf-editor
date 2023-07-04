@@ -89,7 +89,7 @@ const FolderGridCard: React.FC<{ folderID: string, lastAccessed: Date, name: str
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={async (e) => {
-                    await handleDrop(e, folderID, false);
+                    await handleDrop(e, folderID);
                     router.refresh();
                 }}
                 onDragStart={(e) => handleDragStart(e, folderID, false)}
