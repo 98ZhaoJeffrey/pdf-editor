@@ -1,17 +1,47 @@
 import { prisma } from "../../../lib/prisma"
 import { NextResponse } from "next/server";
 
-export async function GET(request: Request, { params }: { params: { folderID: string } }) {
+async function getParent(folderID: string) {
   try {
-    const parent = await prisma.folder.findUnique({
+    return await prisma.folder.findUnique({
       where: {
-        id: params.folderID
+        id: folderID
       },
       select: {
+        id: true,
         folderParentFolderId: true,
+        name: true
       }
-    })
-    return NextResponse.json({ folderParentFolderId: parent?.folderParentFolderId })
+    });
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+async function getAllAncestors(folderID: string) {
+  if (!folderID) {
+    return []
+  }
+  let ancestors = [];
+  let currID = (await getParent(folderID))?.folderParentFolderId;
+  while (currID) {
+    const folder = await getParent(currID);
+    if (folder) {
+      ancestors.unshift({ name: folder.name, folderID: folder.id });
+      currID = folder.folderParentFolderId;
+    } else {
+      console.log("Failed to retrieve folder");
+      return;
+    }
+  }
+  return ancestors;
+}
+
+export async function GET(request: Request, { params }: { params: { folderID: string } }) {
+  try {
+    const allAncestor = await getAllAncestors(params.folderID)
+    return NextResponse.json({ ancestors: allAncestor })
   } catch (e) {
     throw new Error('Failed to obtain parent')
   }

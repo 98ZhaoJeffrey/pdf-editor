@@ -73,25 +73,9 @@ export async function downloadFile(fileID: string, fileName: string) {
     }
 }
 
-export async function changeFolderParent(parentFolderID: string, ID: string, extract: boolean, isFile: boolean) {
+export async function changeFolderParent(parentFolderID: string | null, ID: string, isFile: boolean) {
     let data;
-    if (parentFolderID === 'null') {
-        return
-    }
-    if (extract) {
-        const response = await fetch(`/api/folders/${parentFolderID}`, {
-            method: 'GET'
-        });
-        if (response.ok) {
-            const result = await response.json();
-            const folderParentFolderId = result.folderParentFolderId;
-            data = isFile ? { fileParentFolderId: folderParentFolderId } : { folderParentFolderId: folderParentFolderId };
-        } else {
-            throw new Error(`Error: ${response.status}`);
-        }
-    } else {
-        data = isFile ? { fileParentFolderId: parentFolderID } : { folderParentFolderId: parentFolderID };
-    }
+    data = isFile ? { fileParentFolderId: parentFolderID } : { folderParentFolderId: parentFolderID };
 
     if (parentFolderID === ID) {
         return;

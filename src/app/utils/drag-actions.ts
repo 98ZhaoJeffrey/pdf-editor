@@ -50,7 +50,7 @@ export const handleDragLeave = (event: React.DragEvent<HTMLElement>) => {
 };
 
 
-export const handleDrop = async (event: React.DragEvent<HTMLElement>, id: string, extract: boolean) => {
+export const handleDrop = async (event: React.DragEvent<HTMLElement>, id: string | null) => {
     event.preventDefault();
     const draggedElementID = event.dataTransfer.getData('text/plain');
     event.currentTarget.firstElementChild?.firstElementChild?.classList.remove('bg-blue-300');
@@ -60,7 +60,7 @@ export const handleDrop = async (event: React.DragEvent<HTMLElement>, id: string
     const isFile = JSON.parse(isFileData).isFile;
 
     // Move the dragged folder into the target folder and update the folder structure accordingly
-    await changeFolderParent(id, draggedElementID, extract, isFile);
+    await changeFolderParent(id, draggedElementID, isFile);
 
     console.log(`Moved ${draggedElementID} into ${id}`);
 };
