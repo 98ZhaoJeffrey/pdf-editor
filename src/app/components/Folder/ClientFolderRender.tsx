@@ -2,8 +2,7 @@
 import { ViewPreferenceContext } from '../../contexts/ViewPreferenceContext';
 import { BsGrid3X3Gap, BsListUl } from "react-icons/bs";
 import React, { useContext } from 'react';
-import { handleDrop } from '@/app/utils/drag-actions';
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import BreadCrumbs from '../Elements/BreadCrumbs';
 
 interface ComponentProps {
