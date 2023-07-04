@@ -4,15 +4,10 @@ export const handleDragStart = (event: React.DragEvent<HTMLElement>, id: string,
     event.dataTransfer.setData('text/plain', id);
     event.dataTransfer.setData('application/json', JSON.stringify({ isFile }));
     event.currentTarget.classList.add('opacity-0');
-    const textTitle = document.getElementById('text-title');
-    if (textTitle) {
-        textTitle.classList.add('border');
-    }
 };
 
 export const handleDragEnd = (event: React.DragEvent<HTMLElement>) => {
     event.currentTarget.classList.remove('opacity-0')
-    document.getElementById('text-title')?.classList.remove('border')
 }
 
 export const handleDragEnter = (event: React.DragEvent<HTMLElement>) => {
