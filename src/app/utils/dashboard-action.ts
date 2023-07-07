@@ -52,7 +52,7 @@ export async function changeFileName(fileName: string, fileID: string) {
 
 
 export async function downloadFile(fileID: string, fileName: string) {
-    const response = await fetch(`api/files/${fileID}`, {
+    const response = await fetch(`/api/files/${fileID}`, {
         method: 'GET'
     })
 
