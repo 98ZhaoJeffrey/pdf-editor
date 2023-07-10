@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import { Folder, File } from '@prisma/client';
-import SearchBar from './SearchBar';
+import Searchbar from './Searchbar';
 import SearchResults from './SearchResults';
 
 const SearchbarContainer = () => {
@@ -9,7 +9,7 @@ const SearchbarContainer = () => {
     const [folders, setFolders] = useState<Folder[]>([]);
     return (
         <div className='min-w-[40%]'>
-            <SearchBar setFolders={setFolders} setFiles={setFiles} />
+            <Searchbar setFolders={setFolders} setFiles={setFiles} />
             {(files.length > 0 || folders.length > 0) && <SearchResults folders={folders} files={files} />}
         </div>
     );
