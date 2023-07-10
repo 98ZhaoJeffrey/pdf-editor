@@ -1,8 +1,8 @@
 'use client'
 import React, { useState } from 'react';
+import { Folder, File } from '@prisma/client';
 import SearchBar from './SearchBar';
 import SearchResults from './SearchResults';
-import { Folder, File } from '@prisma/client';
 
 const SearchbarContainer = () => {
     const [files, setFiles] = useState<File[]>([]);
