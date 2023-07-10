@@ -24,7 +24,6 @@ const Searchbar: React.FC<SearchbarProps> = ({ setFolders, setFiles }) => {
             try {
                 const res = await fetch(`/api/documents/${value}`)
                 const data = await res.json()
-                console.log(data)
                 setFolders(data.folders)
                 setFiles(data.files)
             } catch (e) {

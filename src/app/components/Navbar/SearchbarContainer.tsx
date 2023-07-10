@@ -7,7 +7,6 @@ import { Folder, File } from '@prisma/client';
 const SearchbarContainer = () => {
     const [files, setFiles] = useState<File[]>([]);
     const [folders, setFolders] = useState<Folder[]>([]);
-    console.log(files, folders)
     return (
         <div className='min-w-[40%]'>
             <SearchBar setFolders={setFolders} setFiles={setFiles} />

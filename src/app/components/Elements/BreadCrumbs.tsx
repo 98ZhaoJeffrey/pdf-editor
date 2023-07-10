@@ -49,11 +49,11 @@ const BreadCrumbs: React.FC<{ name: string, folderID: string }> = ({ name, folde
                         key={folder.folderID}
                     />
                 ))}
-                <BreadCrumbItem name={name} url={`/dashboard/folders/${folderID}`} isActive={true} folderID=''/>
+                <BreadCrumbItem name={name} url={`/dashboard/folders/${folderID}`} isActive={true} folderID='' key={folderID} />
             </div>
             :
             <div className="-ml-5 pt-5 flex">
-                <BreadCrumbItem name={name} url={`/dashboard/folders/${folderID}`} isActive={true} folderID=''/>
+                <BreadCrumbItem name={name} url={`/dashboard/folders/${folderID}`} isActive={true} folderID='' key={folderID}/>
             </div>
         }</>
     );
