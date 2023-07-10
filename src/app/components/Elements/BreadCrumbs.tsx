@@ -46,6 +46,7 @@ const BreadCrumbs: React.FC<{ name: string, folderID: string }> = ({ name, folde
                         url={`/dashboard/folders/${folder.folderID}`}
                         isActive={false}
                         folderID={folder.folderID}
+                        key={folder.folderID}
                     />
                 ))}
                 <BreadCrumbItem name={name} url={`/dashboard/folders/${folderID}`} isActive={true} folderID=''/>
