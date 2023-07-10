@@ -82,7 +82,6 @@ export async function DELETE(request: Request, { params }: { params: { ID: strin
 
 export async function GET(request: Request, { params }: { params: { ID: string } }) {
     try {
-        console.log("hello")
         const file = await prisma.file.findUnique({
             where: {
                 id: params.ID,
