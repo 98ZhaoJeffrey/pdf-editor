@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from "../../../lib/prisma"
 import { auth } from '@clerk/nextjs';
-import { fstat } from 'fs';
 
 export async function POST(request: NextRequest, { params }: { params: { ID: string } }) {
     console.log("Uploading file")
@@ -104,6 +103,7 @@ export async function GET(request: Request, { params }: { params: { ID: string }
 
             return new Response(blob, { headers });
         }
+        return NextResponse.json({ success: true })
     } catch (error) {
         return NextResponse.json(error)
     }

@@ -5,7 +5,7 @@ import { AiFillFilePdf } from 'react-icons/ai';
 import ContextMenu from '../Elements/ContextMenu';
 import NameModal from '../Elements/NameModal';
 import { changeFileName, deleteFile, downloadFile } from '@/app/utils/dashboard-action';
-import { handleDragEnd, handleDragOver, handleDragStart } from '@/app/utils/drag-actions';
+import { handleDragEnd, handleDragStart } from '@/app/utils/drag-actions';
 
 const PDFGridCard: React.FC<{ name: string, lastUpdated: Date, size: number, fileID: string }> = ({ name, lastUpdated, size, fileID }) => {
     const [showContextMenu, setShowContextMenu] = useState(false);
