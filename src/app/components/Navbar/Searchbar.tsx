@@ -1,11 +1,12 @@
 "use client"
-import { Folder, File } from '@prisma/client';
+import { Folder } from '@prisma/client';
 import React, { useEffect, useState } from 'react'
 import { usePathname  } from 'next/navigation'
+import { FileMetaData } from '@/app/types/types';
 
 interface SearchbarProps {
     setFolders: React.Dispatch<React.SetStateAction<Folder[]>>;
-    setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+    setFiles: React.Dispatch<React.SetStateAction<FileMetaData[]>>;
 }
 
 const Searchbar: React.FC<SearchbarProps> = ({ setFolders, setFiles }) => {

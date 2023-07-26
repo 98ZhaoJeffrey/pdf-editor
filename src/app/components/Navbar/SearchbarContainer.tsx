@@ -1,11 +1,12 @@
 'use client'
 import React, { useState } from 'react';
-import { Folder, File } from '@prisma/client';
+import { Folder } from '@prisma/client';
 import Searchbar from './Searchbar';
 import SearchResults from './SearchResults';
+import { FileMetaData } from '@/app/types/types';
 
 const SearchbarContainer = () => {
-    const [files, setFiles] = useState<File[]>([]);
+    const [files, setFiles] = useState<FileMetaData[]>([]);
     const [folders, setFolders] = useState<Folder[]>([]);
     return (
         <div className='min-w-[40%]'>
