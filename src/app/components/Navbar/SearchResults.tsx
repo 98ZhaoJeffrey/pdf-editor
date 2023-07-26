@@ -1,11 +1,12 @@
 'use client'
 import React from 'react'
 import SearchItem from './SearchItem'
-import { Folder, File } from '@prisma/client';
+import { Folder } from '@prisma/client';
+import { FileMetaData } from '@/app/types/types';
 
 interface SearchResultProps {
     folders: Array<Folder>;
-    files: Array<File>;
+    files: Array<FileMetaData>;
 }
 
 
