@@ -116,7 +116,7 @@ const PDFGridCard: React.FC<{ name: string, lastUpdated: Date, size: number, fil
                     handleSubmit={handleSubmit}
                     handleInputChange={handleInputChange}
                     closeModal={closeModal}
-                    isCreate={false}
+                    title='Rename'
                 />
             )}
         </>

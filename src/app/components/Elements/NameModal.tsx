@@ -7,7 +7,7 @@ interface NameModalProps {
   handleSubmit: (e: FormEvent) => void;
   handleInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
   closeModal: () => void;
-  isCreate: boolean;
+  title: string;
 }
 
 const NameModal: React.FC<NameModalProps> = ({
@@ -16,12 +16,12 @@ const NameModal: React.FC<NameModalProps> = ({
   handleSubmit,
   handleInputChange,
   closeModal,
-  isCreate
+  title
 }) => {
   return (
     <div className="absolute top-0 left-0 flex items-center justify-center w-full h-full bg-gray-800 bg-opacity-50 z-50">
       <div className="bg-white rounded shadow-lg p-6">
-        <h2 className="text-lg font-semibold mb-4">{isCreate ? 'Create Folder' : 'Rename'}</h2>
+        <h2 className="text-lg font-semibold mb-4">{title}</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="text"
