@@ -82,7 +82,7 @@ function AddFolderButton(): JSX.Element {
           handleSubmit={handleSubmit}
           handleInputChange={handleInputChange}
           closeModal={closeModal}
-          isCreate={true}
+          title={"New Folder"}
         />
       )}
     </>

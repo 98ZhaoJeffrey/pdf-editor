@@ -124,7 +124,7 @@ const FolderListCard: React.FC<{ folderID: string, lastAccessed: Date, name: str
                     handleSubmit={handleSubmit}
                     handleInputChange={handleInputChange}
                     closeModal={closeModal}
-                    isCreate={false}
+                    title='Rename'
                 />
             )}
         </>
