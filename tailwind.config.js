@@ -18,7 +18,10 @@ module.exports = {
         secondary: '#45F0DF',
       },
       fontSize: {
-        heading: "4rem",
+        heading: ["4rem", {
+          lineHeight: '5.5rem',
+        }],
+        title: "2.75rem",
         description: "1.5rem",
       },
       backgroundImage: {
