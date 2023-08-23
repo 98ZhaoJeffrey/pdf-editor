@@ -6,6 +6,7 @@ import ContextMenu from '../Elements/ContextMenu';
 import NameModal from '../Elements/NameModal';
 import { changeFileName, deleteFile, downloadFile } from '@/app/utils/dashboard-action';
 import { handleDragEnd, handleDragStart } from '@/app/utils/drag-actions';
+import Link from 'next/link';
 
 const PDFGridCard: React.FC<{ name: string, lastUpdated: Date, size: number, fileID: string }> = ({ name, lastUpdated, size, fileID }) => {
     const [showContextMenu, setShowContextMenu] = useState(false);
@@ -90,7 +91,7 @@ const PDFGridCard: React.FC<{ name: string, lastUpdated: Date, size: number, fil
                 className='relative'
                 onDragStart={(e) => handleDragStart(e, fileID, true)}
                 onDragEnd={handleDragEnd}>
-                <div className='hover:drop-shadow-md' draggable>
+                <Link className='hover:drop-shadow-md' draggable href={`/editor/${fileID}`}>
                     <div className="flex flex-col w-52 h-56 max-h-56 bg-white rounded-3xl mb-8 p-6 justify-between">
                         <AiFillFilePdf size={50} color='red' />
                         <div>
@@ -99,7 +100,7 @@ const PDFGridCard: React.FC<{ name: string, lastUpdated: Date, size: number, fil
                         </div>
                     </div>
                     <div className='w-52 bg-slate-200 -mt-16 p-4 pl-6 rounded-b-3xl text-sm font-medium'>{(size / 1000000).toFixed(1)} Mb</div>
-                </div>
+                </Link>
                 {showContextMenu &&
                     <ContextMenu
                         isFile={true}
