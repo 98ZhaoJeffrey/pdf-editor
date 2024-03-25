@@ -1,0 +1,1 @@
+export type TTool = "select" | "text" | "draw" | "shape"
