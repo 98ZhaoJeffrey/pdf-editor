@@ -14,13 +14,16 @@ import DrawToolsStore from '@/app/stores/DrawToolsStore';
 import ShapeToolsStore from '@/app/stores/ShapeToolsStore';
 import TextToolsStore from '@/app/stores/TextToolsStore';
 import ToolStore from '@/app/stores/ToolStore';
+import PdfCanvasStore from '@/app/stores/PdfCanvasStore';
+import { useStore } from 'zustand';
 
 const PDFEditor = () => {  
   const windowSize = useDeviceSize();
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState<number>(1);
-  const [fabricCanvas, setFabricCanvas] = useState<PdfCanvas | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  const { pdfCanvas, setPdfCanvas } = useStore(PdfCanvasStore)
 
   const onDocumentLoadSuccess = (document: DocumentCallback) => {
     setNumPages(document.numPages);
@@ -38,7 +41,7 @@ const PDFEditor = () => {
           selection: true
         }
       );
-      setFabricCanvas(canvas)
+      setPdfCanvas(canvas)
   }
 
 

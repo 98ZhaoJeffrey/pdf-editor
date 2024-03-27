@@ -5,7 +5,6 @@ import { TShape } from '../types/shape';
 interface ShapeToolsStoreInterface {
     shape: TShape,
     setShape: (shape: TShape) => void,
-
 }
 
 

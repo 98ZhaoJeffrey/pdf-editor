@@ -9,9 +9,14 @@ import { brushOptions } from '../types/brushes';
 import { ToolStoreInterface } from '../stores/ToolStore';
 import { TShape, TShapeOptions } from '../types/shape';
 import { IObjectOptions } from 'fabric/fabric-impl';
+import HistoryStack from './historyStack';
+import { ICanvasHistory, TAction } from '../types/canvasHistory';
+import { generateId } from './generateId';
+import { captializeFirst } from './stringFuncs';
 
 
 type TCanvasModes = "select" | "text" | "draw" | "shape"
+
 class PdfCanvas {
     /**
      * @type Canvas
@@ -24,6 +29,8 @@ class PdfCanvas {
     _toolModes: StoreApi<ToolStoreInterface>
     _currentShapePoint: fabric.Point | undefined
     _currentShape: fabric.Line | fabric.Circle | fabric.Rect | fabric.Triangle | undefined
+    _historyStack: HistoryStack<ICanvasHistory>
+    _historyProcessing: boolean // when we undo/redo and add/remove item, prevents recursive calls
 
     constructor(canvasElement: HTMLCanvasElement, 
         textModes: StoreApi<TextToolsStoreInterface>, 
@@ -37,26 +44,25 @@ class PdfCanvas {
             this._drawModes = drawModes;
             this._shapeModes = shapeModes;
             this._toolModes = toolModes;
-            var circle = new fabric.Circle({
-                radius: 20, fill: 'green', left: 100, top: 100, width: 30, height: 50
-              });
-            this._canvas.add(circle);
+            this._historyStack = new HistoryStack();
+            this._historyProcessing = false;
             this._addListeners();
         }
 
+    /**
+     * 
+     * Adds all the listeners to the canvas
+     */
     _addListeners() {
         this._canvas.on('mouse:down', (event: fabric.IEvent<MouseEvent>) => this._handleMouseDown(event));
         this._canvas.on('mouse:up', (event: fabric.IEvent<MouseEvent>) => this._handleMouseUp(event));
         this._canvas.on('mouse:move', (event: fabric.IEvent<MouseEvent>) => this._handleMouseMove(event));
+        //this._canvas.on('text:editing:exited', (event: fabric.IEvent<MouseEvent>) => this._exitTextEdit());
 
-        // this._canvas.on('path:created', (event: fabric.IEvent<MouseEvent>) => {
-        //     //const newPath = event.target.;
-        // })
-        this._canvas.on('text:editing:exited', () => { 
-            this._canvas.selection = true;
-            this._toolModes.getState().setTool("select")
-        });
-
+        // for updating the history of the object
+        this._canvas.on("object:added", (event: fabric.IEvent<MouseEvent>) => this._saveAction(event, "add"))
+        this._canvas.on("object:removed", (event: fabric.IEvent<MouseEvent>) => this._saveAction(event, "delete"))
+        this._canvas.on("object:modified", (event: fabric.IEvent<MouseEvent>) => this._saveAction(event, "modify"))
     }
 
     /**
@@ -66,7 +72,7 @@ class PdfCanvas {
      * Adds interactive text box to the canvas
      */
     _addText (event: fabric.IEvent<MouseEvent>, options: object) {
-        const text = new fabric.IText('', options);
+        const text = new fabric.IText('', {...options, id: generateId()});
         this._canvas.add(text);
         this._canvas.setActiveObject(text);
         text.enterEditing()
@@ -84,18 +90,17 @@ class PdfCanvas {
         this._canvas.setActiveObject(text);
     }
 
+    _exitTextEdit () {
+        this._canvas.selection = true;
+        this._toolModes.getState().setTool("select")
+    }
+
     _enableDrawing () {
         const { color, size } = this._toolModes.getState();
         const { brushType } = this._drawModes.getState();
-        this._canvas.isDrawingMode = true;
         this._canvas.freeDrawingBrush = new BRUSH_TYPES[brushType].brush(this._canvas);
         this._canvas.freeDrawingBrush.width = size;
         this._canvas.freeDrawingBrush.color = color;
-    }
-
-
-    _updateDimensions() {
-
     }
 
     _addShape(event: fabric.IEvent<MouseEvent>, shape: TShape, options: TShapeOptions) {
@@ -107,7 +112,8 @@ class PdfCanvas {
         fabricShape.selectable = options.selectable;
         fabricShape.hasControls = options.hasControls;
         fabricShape.left = options.left;
-        fabricShape.top = options.top; 
+        fabricShape.top = options.top;
+        fabricShape.id = generateId(); 
 
         if(fabricShape instanceof fabric.Circle){
             fabricShape.radius = 0;
@@ -179,8 +185,14 @@ class PdfCanvas {
     }
 
     _handleMouseUp (event: fabric.IEvent<MouseEvent>) {
-        this._finializeShape(); // for shape events
-        this._toolModes.getState().setTool("select")
+        const tool = this._toolModes.getState().tool;
+        if(tool === 'shape'){
+            this._finializeShape(); // for shape events
+            this._toolModes.getState().setTool("select")
+        }
+        else if(tool === 'draw') {
+        }
+
     }
 
     _handleMouseDown (event: fabric.IEvent<MouseEvent>) {
@@ -192,7 +204,7 @@ class PdfCanvas {
             this._addText(event, {
                 left: pointer.x, 
                 top: pointer.y, 
-                selectable: false,
+                selectable: true,
                 hasControls: true,
                 fontSize: size,
                 fill:color,
@@ -201,9 +213,11 @@ class PdfCanvas {
                 fontStyle: textDecorations.includes('italic') ? 'italic' : 'normal',
                 fontWeight: textDecorations.includes('bold') ? 'bold' : 'normal',
                 underline: textDecorations.includes('underline'),
-                linethrough: textDecorations.includes('strikethrough')
+                linethrough: textDecorations.includes('strikethrough'),
             });
         } else if(tool === 'draw') {
+            this._canvas.isDrawingMode = true;
+            //this._canvas.selection = false;
             this._enableDrawing();
         } else if(tool === 'shape') {
             this._canvas.selection = false;
@@ -230,8 +244,101 @@ class PdfCanvas {
             );
         } 
         else if(tool === 'select') {
+            this._canvas.selection = true;
+            this._canvas.isDrawingMode = false;
             //this.handleSelection(event)
         }
+    }
+
+    _saveAction(event: fabric.IEvent<MouseEvent>, action: TAction) {
+        if (this._historyProcessing)
+            return;
+        const targetObj = event.target
+        if(targetObj){
+            this._historyStack.updateState({
+                "action": action,
+                "data": {"object": [targetObj], "tranformations": event.transform},
+            });
+        }
+    }
+
+    delete(){
+        const obj = this._canvas.getActiveObjects()
+        obj.forEach(o => this._canvas.remove(o))
+    }
+
+    updateItem(obj: fabric.Object[], transform: fabric.Transform) {
+        // There is a bug with updates not being correclty transmitted,
+        // Fix this later
+        const canvasObj = this._canvas.getObjects() 
+        const original = transform.original
+        obj.forEach(o => {
+            const foundObj = canvasObj.find(obj => obj.id === o.id)
+            if(foundObj){
+                foundObj.set(original)
+            }
+        })
+        this._canvas.requestRenderAll()
+    }
+
+    addItem(obj: fabric.Object[]) {
+        obj.forEach(o => {
+            let newFabricObj;
+
+            if(o.type === "line"){
+                const points = o as fabric.Line
+                newFabricObj = new fabric.Line([points.x1 as number, points.y1 as number, points.x2 as number, points.y2 as number], o)
+            }else if(o.type === "i-text") {
+                newFabricObj = new fabric.IText((o as fabric.IText).text as string, o)
+            }else if(o.type === "rect") {
+                newFabricObj = new fabric.Rect(o)
+            }else if(o.type === "ellipse") {
+                newFabricObj = new fabric.Ellipse(o)
+            }else if(o.type === "triangle") {
+                newFabricObj = new fabric.Triangle(o)
+            }
+
+            if(newFabricObj) {
+                this._canvas.add(newFabricObj)
+            } 
+        })
+        this._canvas.requestRenderAll()
+    }
+
+    deleteItem(obj: fabric.Object[]) {
+        const canvasObj = this._canvas.getObjects()
+        obj.forEach(o => {
+            const foundObj = canvasObj.find(obj => obj.id === o.id)
+            foundObj && this._canvas.remove(foundObj)
+        })       
+    }
+
+    undoAction() {
+        this._historyProcessing = true;
+        const undo = this._historyStack.undo()
+        // for undo, we need to swap delete and add
+        if(undo?.action === 'add') this.deleteItem(undo.data.object)
+        if(undo?.action === 'modify') this.updateItem(undo.data.object, undo.data.tranformations as fabric.Transform) 
+        if(undo?.action === 'delete') this.addItem(undo.data.object)
+        this._historyProcessing = false;
+    }
+
+    redoAction() {
+        this._historyProcessing = true;
+        const redo = this._historyStack.redo()
+        // for redo, add and delete stay the same
+        if(redo?.action === 'add') this.addItem(redo.data.object)
+        if(redo?.action === 'modify') this.updateItem(redo.data.object, redo.data.tranformations as fabric.Transform) 
+        if(redo?.action === 'delete') this.deleteItem(redo.data.object)
+        this._historyProcessing = false;
+    }
+
+    canRedo() {
+        return this._historyStack.canRedo()
+    }
+
+    canUndo() {
+        return this._historyStack.canUndo()
     }
 
 

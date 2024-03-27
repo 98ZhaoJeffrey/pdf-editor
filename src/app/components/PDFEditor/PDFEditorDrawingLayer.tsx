@@ -43,7 +43,6 @@ const PDFEditorDrawingLayer = ({height, width} : PDFEditorDrawingLayerProps) => 
           }
         );
         setFabricCanvas(canvas)
-        console.log(canvas)
     }
 
     return (
