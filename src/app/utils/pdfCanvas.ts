@@ -12,7 +12,6 @@ import { IObjectOptions } from 'fabric/fabric-impl';
 import HistoryStack from './historyStack';
 import { ICanvasHistory, TAction } from '../types/canvasHistory';
 import { generateId } from './generateId';
-import { captializeFirst } from './stringFuncs';
 
 
 type TCanvasModes = "select" | "text" | "draw" | "shape"
